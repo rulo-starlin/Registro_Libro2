@@ -1,0 +1,164 @@
+﻿@page "/Libros"
+@using Registro_Libro2.Data
+
+<style>
+    /* Estilos para el formulario */
+    .formulario-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .formulario-label {
+        margin-bottom: 5px;
+    }
+
+    .formulario-input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .formulario-boton {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Estilos para la tabla */
+    .tabla-container {
+        max-width: 600px;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<h3>Registro de Libros</h3>
+
+@* formulario *@
+
+
+
+
+<div class="formulario-container">
+    <div class="formulario-label">Título:</div>
+    <input class="formulario-input" @bind="nuevoLibro.Titulo" />
+
+    <div class="formulario-label">Autor:</div>
+    <input class="formulario-input" @bind="nuevoLibro.Autor" />
+
+    <div class="formulario-label">Año de Publicación:</div>
+    <input type="number" class="formulario-input" @bind="nuevoLibro.AñoPublicacion" />
+
+    <div class="formulario-label">ISBN:</div>
+    <input class="formulario-input" @bind="nuevoLibro.ISBN" />
+
+    <button class="formulario-boton" @onclick="RegistrarLibro">Registrar Libro</button>
+</div>
+
+
+<div class="tabla-container">
+@if (registroLibros != null && registroLibros.ObtenerLibros().Any())
+{
+    <table class="tabla-container">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Año de Publicación</th>
+                <th>ISBN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var libro in registroLibros.ObtenerLibros())
+            {
+                <tr>
+                    <td>@libro.Titulo</td>
+                    <td>@libro.Autor</td>
+                    <td>@libro.AñoPublicacion</td>
+                    <td>@libro.ISBN</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="no-registros">No hay libros registrados</p>
+}
+</div>
+
+<style>
+    /* Estilos para la tabla */
+    .tabla-container {
+        max-width: 800px;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .tabla-libros {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+        .tabla-libros th, .tabla-libros td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .tabla-libros th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    .no-registros {
+        margin-top: 10px;
+        text-align: center;
+        color: #888;
+    }
+</style>
+
+@code {
+
+    RegistroLibros registroLibros = new RegistroLibros();
+    Libros nuevoLibro = new Libros("", "", 0, "");
+
+    
+    private void RegistrarLibro()
+    {
+        registroLibros.RegistrarLibro(nuevoLibro.Titulo, nuevoLibro.Autor, nuevoLibro.AñoPublicacion, nuevoLibro.ISBN);
+        nuevoLibro = new Libros("", "", 0, ""); // Limpiar los campos después de registrar
+    }
+}
+
+                    
